@@ -33,11 +33,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Deploy to Render
-        uses: render-actions/deploy@v1
+        uses: sws2apps/render-deployment@main #consider using pin for dependabot auto update
         with:
-          deploy-hook: https://api.render.com/deploy/srv-cu42or3qf0us73b2g8o0?key=D_nbsutMN4Q  # Utilisez le secret pour le deploy-hook
-          api-key: rnd_DbweaNWGSMr7iwCnfcPqq5DzrkYY          # Utilisez le secret pour la clé API
-  # Clé API Render
-
+          serviceId: srv-cu42or3qf0us73b2g8o0
+          apiKey: rnd_DbweaNWGSMr7iwCnfcPqq5DzrkYY
+          multipleDeployment: false #optional, default true
+        
 
  
