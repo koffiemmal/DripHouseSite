@@ -5,3 +5,13 @@
     </p>
   </div>
 </template>
+
+<style>
+
+p{
+
+  color: 'red';
+}
+
+
+</style>
