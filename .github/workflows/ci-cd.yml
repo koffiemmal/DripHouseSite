@@ -37,11 +37,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Deploy to Render
-        uses: sws2apps/render-deployment@main #consider using pin for dependabot auto update
+        uses: glarivie/render-deploy-service-action@v1.0.5 #consider using pin for dependabot auto update
         with:
           serviceId: srv-cu42or3qf0us73b2g8o0
           apiKey: rnd_DbweaNWGSMr7iwCnfcPqq5DzrkYY
-          multipleDeployment: false #optional, default true
+
         
 
  
