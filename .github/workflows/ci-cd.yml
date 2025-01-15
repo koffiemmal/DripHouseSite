@@ -5,6 +5,10 @@ on:
     branches:
       - main  # Déclenche le pipeline sur un push vers la branche principale
 
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
