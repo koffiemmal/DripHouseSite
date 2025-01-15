@@ -1,0 +1,45 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Déclenche le pipeline sur un push vers la branche principale
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18  # Version de Node.js
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm run test  # Exécutez vos tests unitaires
+
+      - name: Lint code
+        run: npm run lint  # Exécutez le linting
+
+      - name: Build project
+        run: npm run build  # Construisez le projet
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Render
+        uses: render-actions/deploy@v1
+        with:
+          service-id: srv-cu42or3qf0us73b2g8o0  # ID du service Render
+          api-key: rnd_DbweaNWGSMr7iwCnfcPqq5DzrkYY        # Clé API Render
