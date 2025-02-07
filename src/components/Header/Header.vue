@@ -21,7 +21,7 @@
 <style scoped>
 @font-face {
   font-family: "Anton";
-  src: url("@/assets/fonts/Anton.ttf");
+  src: url("@/assets/font/Anton.ttf") format('truetype');;
   font-weight: bolder;
   font-style: normal;
 }
