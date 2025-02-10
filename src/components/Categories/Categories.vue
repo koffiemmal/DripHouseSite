@@ -1,20 +1,26 @@
 <template>
-  <h1>NOS CATEGORIES</h1>
+  <h1 class="title">NOS CATEGORIES</h1>
 
   <!-- Filtre des catégories -->
   <div class="categories_div"> 
+    <div class="category_div"
+      v-for="category in categories"
+      :key="category.id"
+    >
       <button 
-          v-for="category in categories"
-          :key="category.name"
-          class="category_div"
+          class="category_btn"
+          :class="{active: activeCategory === category.id}"
+          @click="setActiveCategory(category.id)"
           >
+          <img :src="category.icon" alt="">
           {{ category.name }}
       </button>
+    </div>
   </div>
 
 
   <div class="grid">
-      <div class="card" v-for="product in products" :key="product.id">
+      <div class="card" v-for="product in filteredProducts" :key="product.id">
 
           <!-- Conteneur pour l'image du produit -->
           <div class="image-container">
@@ -57,19 +63,27 @@
 </template>
 
 <script setup>
-  import { ref } from 'vue';
+  import { computed, ref } from 'vue';
   import logo from '@/assets/logodriphouse 1.png'
 
 
 
   //Liste des catégories
   const categories = ref([
-      {name: "NIKE", icon: ""},
-      {name: "JORDAN", icon: ""},
-      {name: "ADDIDAS", icon: ""},
-      {name: "AUTRES", icon: ""}
+      {id: 1, name: "NIKE", icon: "src/assets/logo_nike.png"},
+      {id: 2, name: "JORDAN", icon: "src/assets/logo_jordan.png"},
+      {id: 3, name: "ADIDAS", icon: "src/assets/logo_adidas.png"},
+      {id: 4, name: "AUTRES", icon: "src/assets/more.png"}
   ]);
 
+  const activeCategory = ref(1); //Fixer la première catégorie comme active par défaut
+
+  //Méthode pour la catégorie active
+  const setActiveCategory = (categoryId) => {
+    activeCategory.value = categoryId;
+  };
+
+  
   //Liste des produits
   const products = ref([
       { id: 1, name: "Nike Running Tn", category: "NIKE", available:true, image: "src/assets/tn.png", colors: ["#A72626", "#4626A7", "#DCD6D6"]},
@@ -82,116 +96,152 @@
     
   ]);
 
+  //Méthode pour filtrer les produits en fonction de la catégorie active
+  const filteredProducts = computed(() => {
+    const categoryName = categories.value.find(cat => cat.id === activeCategory.value)?.name;
+    return products.value.filter(product => product.category === categoryName);
+  } );
+
 </script>
 
 
 <style>
-    button{
-        background-color: #ffffff;
-        border-radius: 10%;
-    }
 
-    .categories_div{
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin-bottom: 30px;
-        
-    }
+  .title{
+    font-size: 36px;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
 
-    .category_div{
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 20px;
-        border: 2px solid black;
-        border-radius: 15px;
-        background-color: #f0f0f0;
-        cursor: pointer;
-        font-weight: bold;
-        transition: 0.3s;
-        
-    }
-
-    .grid{
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px; 
-        width: fit-content; 
-        margin: 0 auto;
-        justify-content: center; 
-        align-items: center; 
-       
-    }
-
-    .card{
-      width: 348px;
-      height: auto;
-      overflow: hidden;
+  .categories_div{
       display: flex;
-      flex-direction: column;
-    }
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+      
+  }
 
-    .image-container {
-      flex: 1;
+  .category_div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 272px;
+    height: 76px;
+    background-color: #F0F0F0;
+    border-radius: 10px;
+  }
+
+  .category_btn{
       display: flex;
-      max-height:348px;
+      width: 233px;
+      height: 49px;
+      padding: 10px 20px;
+      gap: 1rem;
       align-items: center;
       justify-content: center;
-      border-radius: 20px;
-      padding: 10px;
-      background: radial-gradient(circle 200px, #ffffff, #F3F3F378, #92929278);
+      border-radius: 25px;
+      background-color: #ffffff;
+      cursor: pointer;
+      font-size: 36px;
+      /* transition: 0.3s;     */
+  }
+
+  .category_btn img{
+    max-width: 60px;
+    max-height: 100px;
+  }
+
+  .category_btn.active{
+    background-color: black;
+    color:  #ffffff;
+  }
+
+  .category_btn:hover {
+    background-color: black;
+    color: #ffffff;
+  }
+
+  .grid{
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px; 
+      width: fit-content; 
+      margin: 0 auto;
+      justify-content: center; 
+      align-items: center; 
       
-    }
+  }
 
-    .image-container img {
-      max-width: 100%;
-      height: auto;
-    }
+  .card{
+    width: 348px;
+    height: auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
 
-    .details-container {
-      display: flex;
-      padding: 10px;
-      justify-content: space-around;
-    }
+  .image-container {
+    flex: 1;
+    display: flex;
+    max-height:348px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    padding: 10px;
+    background: radial-gradient(circle 200px, #ffffff, #F3F3F378, #92929278);
+    
+  }
 
-    .logo img {
-      width: 50px;
-      height: auto;
-      margin-bottom: 10px;
-    }
+  .image-container img {
+    max-width: 100%;
+    height: auto;
+  }
 
-    .availability {
-      font-size: 0.9rem;
-      margin: 5px 0;
-    }
+  .details-container {
+    display: flex;
+    padding: 10px;
+    justify-content: space-around;
+  }
 
-    .text-green-600{
-      color: #358A24;
-    }
+  .logo img {
+    width: 50px;
+    height: auto;
+    margin-bottom: 10px;
+  }
 
-    .text-red-600{
-      color: #A72626;
-    }
+  .availability {
+    font-size: 0.9rem;
+    margin: 5px 0;
+  }
 
-    .product-name {
-      font-size: 1rem;
-      margin: 10px 0;
-    }
+  .text-green-600{
+    color: #358A24;
+  }
 
-    .colors {
-      display: flex;
-      justify-content: center;
-      gap: 5px;
-      margin-top: 10px;
-    }
+  .text-red-600{
+    color: #A72626;
+  }
 
-    .color-circle {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      border: 1px solid #ccc;
-    }
+  .product-name {
+    font-size: 1rem;
+    margin: 10px 0;
+  }
+
+  .colors {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 10px;
+  }
+
+  .color-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+  }
 
     
 </style>
